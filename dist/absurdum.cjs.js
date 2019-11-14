@@ -701,6 +701,27 @@ function padStart (string, length, substr = ' ') {
 }
 
 /**
+ * Repeat returns a new string containing the provided string copied and concatenated
+ * for the number of times given in the parameter
+ *
+ * @param {string} string input string
+ * @param {Number} count number of times to repeat the string
+ * @returns {string} string containing the specified number of copies of the given string
+ *
+ * @example
+ * const result = strings.repeat('Moo', 3);
+ * console.log(result);
+ * > 'Moo Moo Moo '
+ */
+function repeat (string, count) {
+  if (string.length === 0 || count < 0) return '';
+
+  return new Array(count).fill('').reduce((res) => {
+    return res + string;
+  }, '');
+}
+
+/**
  * Reversed the characters in a string
  *
  * @param {string} string input string
@@ -762,9 +783,42 @@ var index$1 = /*#__PURE__*/Object.freeze({
   includes: includes,
   padEnd: padEnd,
   padStart: padStart,
+  repeat: repeat,
   reverse: reverse$1,
   startsWith: startsWith
 });
 
+/**
+ * Include determines whether one string can be found in another string
+ *
+ * @param {object} object input string
+ * @param {array} filter array of keys to be kept in the filtered object
+ * @returns {object} object filtered to only include elemnts with a key from the filter
+ *
+ * @example
+ * const result = objects.include({ small: "ant", medium: "dog", big: "elephant" }, ['small', 'big']);
+ * console.log(result);
+ * > { small: 'ant', big: 'elephant' }
+ */
+function include (object, filter) {
+  return Object.entries(object).reduce((acc, curr, i) => {
+    if (filter.reduce((res, cur) => {
+      if (res === true || cur === curr[0]) { return true; }
+      return false;
+    }, '')) {
+      acc[curr[0]] = curr[1];
+    }
+    return acc;
+  }, {});
+}
+
+
+
+var index$2 = /*#__PURE__*/Object.freeze({
+  __proto__: null,
+  include: include
+});
+
 exports.arrays = index;
+exports.objects = index$2;
 exports.strings = index$1;
